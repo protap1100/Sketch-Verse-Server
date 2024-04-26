@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config()
 // const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 // Middleware 
@@ -34,11 +34,19 @@ async function run() {
       res.send(result);
   })
 
-    app.post('/Paint', async(req, res)=>{
+    app.post('/allPaint', async(req, res)=>{
         const newPaint =  req.body;
         console.log(newPaint);
         const result  = await paintCollection.insertOne(newPaint);
         res.send(result)
+    })
+
+    // Deleting Single Data 
+    app.delete('/allPaint/:id', async(req,res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result = await paintCollection.deleteOne(query);
+        res.send(result);
     })
 
   try {
