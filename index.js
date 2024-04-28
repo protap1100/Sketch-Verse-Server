@@ -32,14 +32,28 @@ async function run() {
       const cursor = paintCollection.find();
       const result = await cursor.toArray();
       res.send(result);
-  })
+    })
+
+    app.get('/allHomePaint', async(req,res)=>{
+      const cursor = paintCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    app.get('/paintDetails/:id', async (req, res) => {
+      const paintId = req.params.id;
+      // const result = await paintCollection.findOne({ _id: new ObjectId(paintId) });
+      const query = {_id: new ObjectId(paintId) }
+      const result = await paintCollection.findOne(query)
+      res.send(result);
+    });
 
     app.post('/allPaint', async(req, res)=>{
         const newPaint =  req.body;
         console.log(newPaint);
         const result  = await paintCollection.insertOne(newPaint);
         res.send(result)
-    })
+    }) 
 
     // Deleting Single Data 
     app.delete('/allPaint/:id', async(req,res)=>{
@@ -48,6 +62,8 @@ async function run() {
         const result = await paintCollection.deleteOne(query);
         res.send(result);
     })
+
+    
 
   try {
     // Connect the client to the server	(optional starting in v4.7)
