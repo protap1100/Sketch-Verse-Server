@@ -48,6 +48,42 @@ async function run() {
       res.send(result);
     });
 
+    // Getting Single Data for Updating Id 
+    app.get('/updatingPaint/:id', async (req, res) => {
+      const paintId = req.params.id;
+      // const result = await paintCollection.findOne({ _id: new ObjectId(paintId) });
+      const query = {_id: new ObjectId(paintId) }
+      const result = await paintCollection.findOne(query)
+      res.send(result);
+    });
+
+    // Updating
+    app.put('/updatingPaint/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)}
+      console.log(filter); 
+      const options = { upsert: true };
+      const updatePaint = req.body;
+      console.log(updatePaint)
+      const paint = {
+          $set: {
+            name: updatePaint.name,
+            category : updatePaint.category,
+            customization : updatePaint.customization,
+            description: updatePaint.description,
+            image: updatePaint.image,
+            price: updatePaint.price,
+            processTime : updatePaint.processTime,
+            rating : updatePaint.rating,
+            stockStatus: updatePaint.stockStatus
+          }
+      }
+      // console.log(paint)
+      const result = await paintCollection.updateOne(filter, paint, options);
+      res.send(result);
+      })
+
+
     app.post('/allPaint', async(req, res)=>{
         const newPaint =  req.body;
         console.log(newPaint);
