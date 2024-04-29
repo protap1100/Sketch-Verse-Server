@@ -57,6 +57,25 @@ async function run() {
       res.send(result);
     });
 
+    // Posting email 
+    app.post('/myPaint/:email', async (req, res) => {
+      const userEmail = req.params.email;
+      const newPaint = req.body;
+      newPaint.email = userEmail; // Add the user's email to the paint object
+      const result = await paintCollection.insertOne(newPaint);
+      res.send(result);
+    });
+
+    // Getting Data According to email
+    app.get('/myPaint/:email', async (req, res) => {
+      const userEmail = req.params.email;
+      const query = { email: userEmail };
+      const cursor = paintCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+  });
+  
+
     // Updating
     app.put('/updatingPaint/:id', async(req, res) => {
       const id = req.params.id;
@@ -90,6 +109,7 @@ async function run() {
         const result  = await paintCollection.insertOne(newPaint);
         res.send(result)
     }) 
+    
 
     // Deleting Single Data 
     app.delete('/allPaint/:id', async(req,res)=>{
