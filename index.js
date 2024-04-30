@@ -26,7 +26,7 @@ const client = new MongoClient(uri, {
 async function run() {
 
     const paintCollection = client.db('paintDB').collection('paint');
-    const paintCategory = client.db('paintDB').collection('myPaint');
+    const paintCategoryCollection = client.db('paintDB').collection('myPaint');
 
     // Getting Data 
     app.get('/allPaint', async(req,res)=>{
@@ -43,7 +43,7 @@ async function run() {
 
     // Category data 
     app.get('/categoryPaint', async(req,res)=>{
-      const cursor = paintCategory.find();
+      const cursor = paintCategoryCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     })
